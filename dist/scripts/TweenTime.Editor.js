@@ -111,7 +111,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.onKeyRemoved = this.onKeyRemoved.bind(this);
 	
 	    var el = options.el || $('body');
-	    this.$timeline = $(tpl_timeline());
+	    this.$timeline = $(options.template || tpl_timeline());
 	    el.append(this.$timeline);
 	    el.addClass('has-editor');
 	
