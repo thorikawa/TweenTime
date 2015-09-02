@@ -111,7 +111,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.onKeyRemoved = this.onKeyRemoved.bind(this);
 	
 	    var el = options.el || $('body');
-	    this.$timeline = $(options.template || tpl_timeline());
+	    this.$timeline = $(tpl_timeline());
 	    el.append(this.$timeline);
 	    el.addClass('has-editor');
 	
@@ -450,7 +450,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    this.xAxis = d3.svg.axis().scale(this.x).orient("top").tickSize(-height, 0).tickFormat(_coreUtils2['default'].formatMinutes);
 	
-	    this.svg = d3.select('.timeline__main').append("svg").attr("width", width + margin.left + margin.right).attr("height", 600);
+	    this.svg = d3.select(editor.$timeline.get(0)).select('.timeline__main').append("svg").attr("width", width + margin.left + margin.right).attr("height", 600);
 	
 	    this.svgContainer = this.svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 	
@@ -458,7 +458,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    this.linesContainer = this.svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 	
-	    this.header = new _Header2['default'](this.timer, this.initialDomain, this.tweenTime, width, margin);
+	    this.header = new _Header2['default'](editor, this.timer, this.initialDomain, this.tweenTime, width, margin);
 	    this.timeIndicator = new _TimeIndicator2['default'](this, this.svgContainerTime);
 	
 	    this.selection = new _Selection2['default'](this, this.svg, margin);
@@ -596,7 +596,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Signals = __webpack_require__(4);
 	
 	var Header = (function () {
-	  function Header(timer, initialDomain, tweenTime, width, margin) {
+	  function Header(editor, timer, initialDomain, tweenTime, width, margin) {
 	    _classCallCheck(this, Header);
 	
 	    this.timer = timer;
@@ -617,7 +617,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    this.xAxis = d3.svg.axis().scale(this.x).orient("top").tickSize(-5, 0).tickFormat(_coreUtils2['default'].formatMinutes);
 	
-	    this.svg = d3.select('.timeline__header').append("svg").attr("width", width + this.margin.left + this.margin.right).attr("height", 56);
+	    this.svg = d3.select(editor.$timeline.get(0)).select('.timeline__header').append("svg").attr("width", width + this.margin.left + this.margin.right).attr("height", 56);
 	
 	    this.svgContainer = this.svg.append("g").attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
 	
