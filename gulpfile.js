@@ -60,7 +60,7 @@ var getWebpackConfig = function() {
     },
     module: {
       loaders: [
-        { test: /\.js$/, exclude: [/bower_components/, /node_modules/, /dist/], loader: '6to5-loader?runtime=true'},
+        { test: /\.js$/, exclude: [/bower_components/, /node_modules/, /dist/], loader: 'babel-loader'},
         { test: /\.tpl.html$/, loader: 'mustache'},
       ],
     },
