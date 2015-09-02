@@ -111,6 +111,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.onKeyRemoved = this.onKeyRemoved.bind(this);
 	
 	    var el = options.el || $('body');
+	    this.el = el;
 	    this.$timeline = $(tpl_timeline());
 	    el.append(this.$timeline);
 	    el.addClass('has-editor');
@@ -1707,10 +1708,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.keyRemoved = new Signals.Signal();
 	    this.items = [];
 	
+	    this.parentElement = editor.el;
 	    // Close properties by default.
-	    $('body').addClass('properties-is-closed');
+	    this.parentElement.addClass('properties-is-closed');
 	    // Add the properties editor to the document.
-	    $('body').append(this.$el);
+	    this.parentElement.append(this.$el);
 	
 	    this.selectionManager.onSelect.add(this.onSelect);
 	
@@ -1745,7 +1747,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      // When selecting anything, automatically display the properties editor.
 	      if (this.items.length) {
-	        $('body').removeClass('properties-is-closed');
+	        this.parentElement.removeClass('properties-is-closed');
 	      }
 	    }
 	  }, {
