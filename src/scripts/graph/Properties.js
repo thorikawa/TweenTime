@@ -14,7 +14,9 @@ export default class Properties {
 
     var propVal = function(d) {
       if (d.properties) {
-        return d.properties.filter((prop) => {return prop.keys.length;});
+        // Updated: keep property with no key frames
+        // return d.properties.filter((prop) => {return prop.keys.length;});
+        return d.properties;
       } else {
         return [];
       }
