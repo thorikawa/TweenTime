@@ -7,7 +7,7 @@
 		exports["Core"] = factory(require("./signals"), require("TweenMax"), require("lodash"));
 	else
 		root["TweenTime"] = root["TweenTime"] || {}, root["TweenTime"]["Core"] = factory(root["signals"], root["TweenMax"], root["_"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_6__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_6__, __WEBPACK_EXTERNAL_MODULE_7__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -56,27 +56,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	var _Utils = __webpack_require__(1);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _Utils2 = _interopRequireDefault(_Utils);
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _Timer = __webpack_require__(2);
+	__webpack_require__(1);
 	
-	var _Timer2 = _interopRequireDefault(_Timer);
+	var _coreUtils = __webpack_require__(2);
 	
-	var _Orchestrator = __webpack_require__(4);
+	var _coreUtils2 = _interopRequireDefault(_coreUtils);
 	
-	var _Orchestrator2 = _interopRequireDefault(_Orchestrator);
+	var _coreTimer = __webpack_require__(3);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _coreTimer2 = _interopRequireDefault(_coreTimer);
 	
-	function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+	var _coreOrchestrator = __webpack_require__(5);
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var _coreOrchestrator2 = _interopRequireDefault(_coreOrchestrator);
 	
-	var _ = __webpack_require__(6);
+	var _ = __webpack_require__(7);
 	
 	var Core = (function () {
 	  function Core(data) {
@@ -85,50 +85,49 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _classCallCheck(this, Core);
 	
 	    this.data = data;
-	    this.options = options;
-	    this.timer = new _Timer2.default(options);
-	    this.orchestrator = new _Orchestrator2.default(this.timer, this.data);
+	    this.timer = new _coreTimer2['default'](options);
+	    this.orchestrator = new _coreOrchestrator2['default'](this.timer, this.data);
 	  }
 	
 	  _createClass(Core, [{
 	    key: 'getItem',
 	    value: function getItem(item_id) {
 	      // In case we passed the item object directly return it.
-	      if (item_id && (typeof item_id === 'undefined' ? 'undefined' : _typeof(item_id)) === 'object') {
+	      if (item_id && typeof item_id == 'object') {
 	        return item_id;
 	      }
 	
 	      return _.find(this.data, function (item) {
-	        return item.id === item_id;
+	        return item.id == item_id;
 	      });
 	    }
 	  }, {
 	    key: 'getProperty',
 	    value: function getProperty(prop_name, item_id_or_obj) {
 	      // If we passed the item name get the object from it.
-	      var item = this.getItem(item_id_or_obj);
+	      item_id_or_obj = this.getItem(item_id_or_obj);
 	
 	      // Return false if we have no item
-	      if (!item) {
+	      if (!item_id_or_obj) {
 	        return false;
 	      }
 	
-	      return _.find(item.properties, function (property) {
-	        return property.name === prop_name;
+	      return _.find(item_id_or_obj.properties, function (property) {
+	        return property.name == prop_name;
 	      });
 	    }
 	  }, {
 	    key: 'getValues',
 	    value: function getValues(item_id_or_obj) {
 	      // If we passed the item name get the object from it.
-	      var item = this.getItem(item_id_or_obj);
+	      item_id_or_obj = this.getItem(item_id_or_obj);
 	
 	      // Return false if we have no item
-	      if (!item) {
+	      if (!item_id_or_obj) {
 	        return undefined;
 	      }
 	
-	      return item.values;
+	      return item_id_or_obj.values;
 	    }
 	  }, {
 	    key: 'getValue',
@@ -143,14 +142,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      if (values[prop_name] !== undefined) {
 	        return values[prop_name];
+	      } else {
+	        return undefined;
 	      }
-	      return undefined;
 	    }
 	  }, {
 	    key: 'getKeyAt',
 	    value: function getKeyAt(property, time_in_seconds) {
 	      return _.find(property.keys, function (key) {
-	        return key.time === time_in_seconds;
+	        return key.time == time_in_seconds;
 	      });
 	    }
 	  }, {
@@ -158,11 +158,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function setValue(property, new_val) {
 	      var time_in_seconds = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 	
-	      var time = time_in_seconds;
-	      if (time === false) {
-	        time = this.timer.getCurrentTime() / 1000;
+	      if (time_in_seconds === false) {
+	        time_in_seconds = this.timer.getCurrentTime() / 1000;
 	      }
-	      var key = this.getKeyAt(property, time);
+	      var key = this.getKeyAt(property, time_in_seconds);
 	
 	      if (key) {
 	        // If we found a key, simply update the value.
@@ -174,13 +173,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        } else {
 	          // If we are not on a key but the property has other keys,
 	          // create it and add it to the keys array.
-	          key = { val: new_val, time: time, _property: property };
-	          if (this.options.defaultEase) {
-	            key.ease = this.options.defaultEase;
-	          }
+	          key = { val: new_val, time: time_in_seconds, _property: property };
 	          property.keys.push(key);
 	          // Also sort the keys.
-	          property.keys = _Utils2.default.sortKeys(property.keys);
+	          property.keys = _coreUtils2['default'].sortKeys(property.keys);
 	        }
 	      }
 	    }
@@ -200,13 +196,20 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1 */
 /***/ function(module, exports) {
 
-	'use strict';
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	/* WEBPACK VAR INJECTION */(function(global) {(function(global){var to5Runtime=global.to5Runtime={};to5Runtime.extends=function(child,parent){child.prototype=Object.create(parent.prototype,{constructor:{value:child,enumerable:false,writable:true,configurable:true}});child.__proto__=parent};to5Runtime.classProps=function(child,staticProps,instanceProps){if(staticProps)Object.defineProperties(child,staticProps);if(instanceProps)Object.defineProperties(child.prototype,instanceProps)};to5Runtime.applyConstructor=function(Constructor,args){var instance=Object.create(Constructor.prototype);var result=Constructor.apply(instance,args);return result!=null&&(typeof result=="object"||typeof result=="function")?result:instance};to5Runtime.taggedTemplateLiteral=function(strings,raw){return Object.defineProperties(strings,{raw:{value:raw}})};to5Runtime.interopRequire=function(obj){return obj&&(obj["default"]||obj)};to5Runtime.toArray=function(arr){return Array.isArray(arr)?arr:Array.from(arr)};to5Runtime.objectSpread=function(obj,keys){var target={};for(var i in obj){if(keys.indexOf(i)>=0)continue;if(!Object.prototype.hasOwnProperty.call(obj,i))continue;target[i]=obj[i]}return target};to5Runtime.hasOwn=Object.prototype.hasOwnProperty;to5Runtime.slice=Array.prototype.slice})(typeof global==="undefined"?self:global);
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 2 */
+/***/ function(module, exports) {
+
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -216,24 +219,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	
 	  _createClass(Utils, null, [{
-	    key: 'formatMinutes',
+	    key: "formatMinutes",
 	    value: function formatMinutes(d) {
 	      // convert milliseconds to seconds
-	      var seconds = d / 1000;
-	      var hours = Math.floor(seconds / 3600);
-	      var minutes = Math.floor((seconds - hours * 3600) / 60);
-	      seconds = seconds - minutes * 60;
-	      var output = seconds + 's';
+	      d = d / 1000;
+	      var hours = Math.floor(d / 3600);
+	      var minutes = Math.floor((d - hours * 3600) / 60);
+	      var seconds = d - minutes * 60;
+	      var output = seconds + "s";
 	      if (minutes) {
-	        output = minutes + 'm ' + output;
+	        output = minutes + "m " + output;
 	      }
 	      if (hours) {
-	        output = hours + 'h ' + output;
+	        output = hours + "h " + output;
 	      }
 	      return output;
 	    }
 	  }, {
-	    key: 'getClosestTime',
+	    key: "getClosestTime",
 	    value: function getClosestTime(data, time) {
 	      var objectId = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 	      var property_name = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
@@ -251,7 +254,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        for (var i = 0; i < data.length; i++) {
 	          var item = data[i];
 	          // Don't match item with itself, but allow property to match item start/end.
-	          if (item.id !== objectId || property_name) {
+	          if (item.id != objectId || property_name) {
 	            // First check start & end.
 	            if (Math.abs(item.start - time) <= tolerance) {
 	              return item.start;
@@ -267,7 +270,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var prop = item.properties[j];
 	
 	            // Don't match property with itself.
-	            if (prop.keys && (item.id !== objectId || prop.name !== property_name)) {
+	            if (prop.keys && (item.id != objectId || prop.name != property_name)) {
 	              for (var k = 0; k < prop.keys.length; k++) {
 	                var key = prop.keys[k];
 	                if (Math.abs(key.time - time) <= tolerance) {
@@ -281,7 +284,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return false;
 	    }
 	  }, {
-	    key: 'getPreviousKey',
+	    key: "getPreviousKey",
 	    value: function getPreviousKey(keys, time) {
 	      var prevKey = false;
 	      for (var i = 0; i < keys.length; i++) {
@@ -295,7 +298,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return prevKey;
 	    }
 	  }, {
-	    key: 'sortKeys',
+	    key: "sortKeys",
 	    value: function sortKeys(keys) {
 	      var compare = function compare(a, b) {
 	        if (a.time < b.time) {
@@ -309,41 +312,44 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return keys.sort(compare);
 	    }
 	  }, {
-	    key: 'guid',
+	    key: "guid",
 	    value: function guid() {
 	      var s4 = function s4() {
 	        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
 	      };
-	      return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+	      return s4() + s4() + "-" + s4() + "-" + s4() + "-" + s4() + "-" + s4() + s4() + s4();
 	    }
 	  }]);
 	
 	  return Utils;
 	})();
 	
-	exports.default = Utils;
+	exports["default"] = Utils;
+	module.exports = exports["default"];
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	Object.defineProperty(exports, "__esModule", {
+	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	var Signals = __webpack_require__(3);
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var Signals = __webpack_require__(4);
 	
 	var Timer = (function () {
 	  function Timer() {
-	    _classCallCheck(this, Timer);
+	    var _this = this;
 	
 	    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	    _classCallCheck(this, Timer);
 	
 	    // in millisecond
 	    this.totalDuration = options.totalDuration || 240 * 1000;
@@ -356,8 +362,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.statusChanged = new Signals.Signal();
 	    this.durationChanged = new Signals.Signal();
 	    this.seeked = new Signals.Signal();
-	    this.update = this.update.bind(this);
-	    window.requestAnimationFrame(this.update);
+	    window.requestAnimationFrame(function (timestamp) {
+	      return _this.update(timestamp);
+	    });
 	  }
 	
 	  _createClass(Timer, [{
@@ -403,8 +410,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'update',
 	    value: function update(timestamp) {
+	      var _this2 = this;
+	
 	      // Init timestamp
-	      if (this.last_timeStamp === -1) {
+	      if (this.last_timeStamp == -1) {
 	        this.last_timeStamp = timestamp;
 	      }
 	      var elapsed = timestamp - this.last_timeStamp;
@@ -423,37 +432,40 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      this.last_timeStamp = timestamp;
 	      this.last_time = this.time[0];
-	      window.requestAnimationFrame(this.update);
+	      window.requestAnimationFrame(function (timestamp) {
+	        return _this2.update(timestamp);
+	      });
 	    }
 	  }]);
 	
 	  return Timer;
 	})();
 	
-	exports.default = Timer;
-
-/***/ },
-/* 3 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
+	exports['default'] = Timer;
+	module.exports = exports['default'];
 
 /***/ },
 /* 4 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	Object.defineProperty(exports, "__esModule", {
+	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	var Signals = __webpack_require__(3);
-	var TweenMax = __webpack_require__(5);
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var Signals = __webpack_require__(4);
+	var TweenMax = __webpack_require__(6);
 	
 	var Orchestrator = (function () {
 	  function Orchestrator(timer, data) {
@@ -480,7 +492,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      if (key && key.ease) {
 	        var ease_index = key.ease.split('.');
-	        if (ease_index.length === 2 && window[ease_index[0]] && window[ease_index[0]][ease_index[1]]) {
+	        if (ease_index.length == 2 && window[ease_index[0]] && window[ease_index[0]][ease_index[1]]) {
 	          return window[ease_index[0]][ease_index[1]];
 	        }
 	      }
@@ -494,7 +506,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      for (var property_key = 0; property_key < item.properties.length; property_key++) {
 	        var property = item.properties[property_key];
 	        // Setup special properties
-	        if (property.type && property.type === 'color') {
+	        if (property.type && property.type == "color") {
 	          // If the property is a color mark it as css
 	          property.css = true;
 	        }
@@ -509,7 +521,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'initItemValues',
 	    value: function initItemValues(item) {
 	      item.values = {};
-	      // item._isDirty = true
+	      //item._isDirty = true
 	      for (var property_key = 0; property_key < item.properties.length; property_key++) {
 	        var property = item.properties[property_key];
 	        if (property.keys.length) {
@@ -525,10 +537,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function update(timestamp) {
 	      var seconds = timestamp / 1000;
 	      var has_dirty_items = false;
-	      var i;
-	      var item;
-	      var property;
-	      var property_key;
+	      var i, item, property, property_key;
 	
 	      for (i = 0; i < this.data.length; i++) {
 	        item = this.data[i];
@@ -554,7 +563,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	        if (item._timeline && item._isDirty && item.properties) {
 	          item._isDirty = false;
-	          // item._timeline.clear();
+	          //item._timeline.clear();
 	
 	          for (property_key = 0; property_key < item.properties.length; property_key++) {
 	            property = item.properties[property_key];
@@ -659,19 +668,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return Orchestrator;
 	})();
 	
-	exports.default = Orchestrator;
-
-/***/ },
-/* 5 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_5__;
+	exports['default'] = Orchestrator;
+	module.exports = exports['default'];
 
 /***/ },
 /* 6 */
 /***/ function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_7__;
 
 /***/ }
 /******/ ])
